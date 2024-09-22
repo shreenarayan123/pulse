@@ -1,0 +1,53 @@
+{
+    "data": [
+      { "id":"1",
+        "title": "Complete project proposal",
+        "content": "Draft and finalize the project proposal for the new client",
+        "status": "in progress",
+        "deadline": "2024-10-15",
+        "priority": "high"
+      },
+      { "id":"2",
+        "title": "Review code changes",
+        "content": "Go through the pull requests and review code changes",
+        "status": "to do",
+        "deadline": "2024-09-30",
+        "priority": "medium"
+      },
+      { "id":"3",
+        "title": "Update documentation",
+        "content": "Update the user manual with the latest features",
+        "status": "completed",
+        "deadline": "2024-09-20",
+        "priority": "low"
+      },
+      { "id":"4",
+        "title": "Prepare for team meeting",
+        "content": "Gather progress reports and prepare slides for the weekly team meeting",
+        "status": "to do",
+        "deadline": "2024-09-25",
+        "priority": "medium"
+      },
+      { "id":"5",
+        "title": "Optimize database queries",
+        "content": "Identify and optimize slow-running database queries to improve performance",
+        "status": "in progress",
+        "deadline": "2024-10-05",
+        "priority": "high"
+      },
+      { "id":"6",
+        "title": "launch of product",
+        "content": "Identify and optimize slow-running database queries to improve performance",
+        "status": "in progress",
+        "deadline": "2024-12-05",
+        "priority": "high"
+      },
+      { "id":"7",
+        "title": "Optimize database queries",
+        "content": "Identify and optimize slow-running database queries to improve performance",
+        "status": "in progress",
+        "deadline": "2024-10-05",
+        "priority": "high"
+      }
+    ]
+  }
