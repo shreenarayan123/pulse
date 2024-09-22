@@ -29,15 +29,15 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden md:block lg:block ">
-            <div className="">
-              <Image className="rounded-2xl"
+            <div className="shadow-2xl">
+              <Image className="rounded-2xl "
                 src={Homee}
                 alt="Home"
                 width={800}
                 height={800}
                 priority
               />
-              <div className="absolute top-28 right-0  shadow-2xl">
+              <div className="absolute top-28 right-10  shadow-2xl">
                 <Image className="rounded-2xl"
                   src={Board}
                   alt="Board"
