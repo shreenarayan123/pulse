@@ -188,4 +188,4 @@ function LabelledInput({
   );
 }
 
-export default Page;
+export default Page

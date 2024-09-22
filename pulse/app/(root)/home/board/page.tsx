@@ -57,7 +57,7 @@ const taskData = {
   ]
 };
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
 
   const router = useRouter();
   const token = localStorage.getItem('token');
@@ -102,4 +102,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;
