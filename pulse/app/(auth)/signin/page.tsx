@@ -28,8 +28,10 @@ const Page = () => {
       
       const jwt = res.data.token;
       const user = JSON.stringify(res.data.user);
-      localStorage.setItem("token", jwt);
-      localStorage.setItem("user", user);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("token", jwt);
+        localStorage.setItem("user", user);
+      }
       toast.success('Successfully signed in!');
       router.push('/home');    
     } catch (error: any) {

@@ -2,7 +2,7 @@
 
 import { SignupInput } from "@shreenarayan/medium-zod";
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { validateEmail } from "../../../lib/EmailValid";
 import { PasswordStrength } from "../../../lib/PasswordStrength";
@@ -17,6 +17,7 @@ const Page = () => {
   const router = useRouter();
 
   const handleUser = () => {};
+ 
 
   const handleBlurUser = () => {};
 
@@ -56,8 +57,10 @@ const Page = () => {
 
           const jwt = res.data.token;
           const user = JSON.stringify(res.data.user);
-          localStorage.setItem("token", jwt);
-          localStorage.setItem("user", user);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("token", jwt);
+            localStorage.setItem("user", user);
+          };
           toast.success("Successfully signed up..!");
           router.push("/home");
         } catch (error: any) {

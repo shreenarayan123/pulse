@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import Column from '@/components/Column'
 import { useRouter } from 'next/navigation';
@@ -60,10 +60,14 @@ const taskData = {
 const Page: React.FC = () => {
 
   const router = useRouter();
-  const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/');
-        }
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/');
+    }
+   
+  }, []);
+       
   // Transform the imported data to include an id for each task
   const initialTasks: Task[] = taskData.data.map((task, index) => ({
     ...task,

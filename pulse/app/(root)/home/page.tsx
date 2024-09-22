@@ -1,15 +1,18 @@
 "use client"
 import Content from '@/components/Content'
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function page() {
 
   const router = useRouter();
-  const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/');
-        }
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/');
+    }
+   
+  }, []);
   return (
     <div className='w-full h-full'>
       
