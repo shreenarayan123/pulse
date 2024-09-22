@@ -9,7 +9,8 @@ import { PasswordStrength } from "../../../lib/PasswordStrength";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+
+const Page = () => {
   const [isUser, setIsUser] = useState(false);
   const [isPass, setIsPass] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<String>("");
@@ -116,7 +117,7 @@ const page = () => {
             onBlur={() => setIsUser(false)}
           />
           <div className={isUser ? "text-black  block" : "text-black  hidden"}>
-            {/* <span className='text-3xl relative bottom-0.5 font-bold'> </span>  */}
+           
           </div>
 
           <LabelledInput
@@ -187,4 +188,4 @@ function LabelledInput({
   );
 }
 
-export default page;
+export default Page;

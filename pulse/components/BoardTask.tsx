@@ -34,9 +34,6 @@ const getStatusColor = (status: Status): string => {
   }
 };
 
-interface TaskCardProps {
-  task: Tasktype;
-}
 
 
   const BoardTask: React.FC<{ task: Tasktype; index: number }> = ({ task, index }) => {

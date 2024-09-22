@@ -1,11 +1,10 @@
 "use client";
 
-import { ChevronDown, ChevronUp, Plus, SearchCheck, SearchIcon } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,

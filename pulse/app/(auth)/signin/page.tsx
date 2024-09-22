@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState, FormEvent } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 
-const page = () => {
+
+const Page = () => {
   const [isUser, setIsUser] = useState(false);
   const [isPass, setIsPass] = useState(false);
   
@@ -117,4 +118,4 @@ function LabelledInput({ label, placeholder, onChange, onFocus, onBlur, type }: 
   );
 }
 
-export default page;
+export default Page;
