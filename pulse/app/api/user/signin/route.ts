@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../../../../model/user-model";
+import  dbConnect  from "@/lib/mongo";
+
+
+dbConnect();
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,12 +27,21 @@ export async function POST(request: NextRequest) {
 
     const jwtSecret = process.env.JWT_SECRET || "secret";
     const token = jwt.sign({ id: user._id }, jwtSecret);
+
     const response = NextResponse.json({
       message: "Login successful",
       success: true,
-      user: user,
-      toke: token,
+      user: user
     });
+
+    response.cookies.set({
+      name:"token",
+      value:token,
+      path:"/",
+      httpOnly:true,
+      sameSite:"strict",
+      maxAge:60 *60 * 24 * 7 // 7days
+    })
 
     return response;
   } catch (error: any) {

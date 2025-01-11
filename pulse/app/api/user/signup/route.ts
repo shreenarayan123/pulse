@@ -2,7 +2,7 @@ import { User } from "../../../../model/user-model";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { dbConnect } from "@/lib/mongo";
+import  dbConnect  from "@/lib/mongo";
 
 dbConnect();
 
@@ -32,12 +32,21 @@ export async function POST(request: NextRequest) {
     const jwtSecret = process.env.JWT_SECRET || "secret";
     const token = jwt.sign({ id: savedUser._id }, jwtSecret);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "User created successfully",
       success: true,
       user: { username: savedUser.username, email: savedUser.email },
-      token: token,
     });
+
+    response.cookies.set({
+      name:"token",
+      value:token,
+      httpOnly:true,
+      sameSite:"strict",
+      path:"/",
+      maxAge:60 * 60 *24 *7 // 1 week
+    })
+    return response;
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

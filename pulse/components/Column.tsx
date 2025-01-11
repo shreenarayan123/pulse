@@ -5,22 +5,13 @@ import Todo from '../app/assets/Todo.png';
 import Completed from '../app/assets/Completed.png';
 import Inprogress from '../app/assets/Inprogress.png';
 import { StaticImageData } from 'next/image';
+import { TaskType } from '@/actions/task/types';
 
-type Priority = 'low' | 'mid' | 'high';
-type Status = 'to do' | 'in progress' | 'completed';
 
-interface Task {
-  id: string;
-  title: string;
-  content: string;
-  status: Status;
-  deadline: string;
-  priority: Priority;
-}
 
 interface ColumnProps {
   title: string;
-  tasks: Task[];
+  tasks: TaskType[];
 }
 
 const Column: React.FC<ColumnProps> = ({ title, tasks }) => {
@@ -49,8 +40,8 @@ const Column: React.FC<ColumnProps> = ({ title, tasks }) => {
             <img src={getImageForTitle(title).src} alt={title} className="w-12 h-12" />
             <span className='font-sans text-xl font-bold mb-4'>{title}</span>
           </div>
-          {tasks.map((task, index) => (
-            <BoardTask key={task.id} task={task} index={parseInt(task.id)} />
+          {tasks.map((task) => (
+            <BoardTask key={task._id} task={task} index={parseInt(task._id)} />
           ))}
           {provided.placeholder}
         </div>

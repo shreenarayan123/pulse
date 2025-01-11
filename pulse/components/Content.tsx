@@ -10,19 +10,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Data from '../data.json';
 import Task from "../components/Task";
-import React, { useState } from "react";
-
-
-
-type Priority = 'low' | 'mid' | 'high';
-type Status = 'to do' | 'in progress' | 'completed';
-
+import React, { useEffect, useState } from "react";
+import { TaskType } from "@/actions/task/types";
+import { getTask } from "@/actions/task";
+import { useGlobalContext } from "@/app/context/globalProvider";
 
 const Content = () => {
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const { setTaskFormModal } = useGlobalContext();
 
-  const tasks= Data.data
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const result = await getTask();
+        const data = await  result.map((task: any) => ({
+          ...task,
+          status: task.status.toLowerCase(),
+          priority: task.priority.toLowerCase(),
+        })) as TaskType[];
+        console.log(data, "Data");
+        setTasks(data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   const [position, setPosition] = useState("bottom");
   const [dropMenu, setDropMenu] = useState(false);
   const [dropSort, setDropSort] = useState(false);
@@ -47,9 +63,10 @@ const Content = () => {
         </div>
       </div>
       <div className="w-full flex items-center justify-between pt-4">
-        <span className="text-2xl font-bold font-sans flex w-full pl-10">All Tasks</span>
+        <span className="text-2xl font-bold font-sans flex w-full pl-10">
+          All Tasks
+        </span>
         <div className="w-full flex    mb-5 gap-10">
-          
           <div className=" ">
             <DropdownMenu open={dropMenu} onOpenChange={setDropMenu}>
               <DropdownMenuTrigger asChild>
@@ -64,7 +81,7 @@ const Content = () => {
                   onValueChange={setPosition}
                 >
                   <DropdownMenuRadioItem value="top">
-                    To do
+                    To Do
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="bottom">
                     In Progress
@@ -100,14 +117,21 @@ const Content = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <Button className="bg-blue-500 flex items-center gap-2"><Plus/>  Add new Task</Button>
+          <Button
+            onClick={() => setTaskFormModal(true)}
+            className="bg-blue-500 flex items-center gap-2"
+          >
+            <Plus /> Add new Task
+          </Button>
         </div>
       </div>
 
       <div className="w-full grid grid-cols-2 overflow-y-scroll lg:grid-cols-4 h-[87%] bg-slate-100  p-5 gap-3 border-t-2 border-gray-100">
-      {tasks.map((task, index) => (
-  <Task key={index} task={{ ...task, status: task.status as Status , priority: task.priority as Priority}} />
-))}
+        <div>
+          {tasks.map((task) => (
+            <Task key={task._id} task={task} />
+          ))}
+        </div>
       </div>
     </div>
   );

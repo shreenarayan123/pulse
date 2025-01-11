@@ -3,80 +3,38 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import Column from '@/components/Column'
 import { useRouter } from 'next/navigation';
+import { Priority, Status, TaskType } from '@/actions/task/types';
+import { getTask } from '@/actions/task';
 
-type Priority = 'low' | 'mid' | 'high';
-type Status = 'to do' | 'in progress' | 'completed';
 
-interface Task {
-  id: string; // Added id field
-  title: string;
-  content: string;
-  status: Status;
-  deadline: string;
-  priority: Priority;
-}
-
-// This would typically be imported from a JSON file or fetched from an API
-const taskData = {
-  "data": [
-    {
-      "title": "Complete project proposal",
-      "content": "Draft and finalize the project proposal for the new client",
-      "status": "in progress",
-      "deadline": "2024-10-15",
-      "priority": "high"
-    },
-    {
-      "title": "Review code changes",
-      "content": "Go through the pull requests and review code changes",
-      "status": "to do",
-      "deadline": "2024-09-30",
-      "priority": "mid"
-    },
-    {
-      "title": "Update documentation",
-      "content": "Update the user manual with the latest features",
-      "status": "completed",
-      "deadline": "2024-09-20",
-      "priority": "low"
-    },
-    {
-      "title": "Prepare for team meeting",
-      "content": "Gather progress reports and prepare slides for the weekly team meeting",
-      "status": "to do",
-      "deadline": "2024-09-25",
-      "priority": "mid"
-    },
-    {
-      "title": "Optimize database queries",
-      "content": "Identify and optimize slow-running database queries to improve performance",
-      "status": "in progress",
-      "deadline": "2024-10-05",
-      "priority": "high"
-    }
-  ]
-};
 
 const Page: React.FC = () => {
 
-  const router = useRouter();
+  const [allTasks, setallTasks] = useState<TaskType[]>([]);
+
   useEffect(() => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      router.push('/');
-    }
-   
+    const fetchTasks = async () => {
+      try {
+        const result = await getTask();
+        setallTasks(result);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    
+    fetchTasks();
   }, []);
+
        
-  // Transform the imported data to include an id for each task
-  const initialTasks: Task[] = taskData.data.map((task, index) => ({
+  
+  const initialTasks: TaskType[] = allTasks.map((task, index) => ({
     ...task,
     id: `task-${index + 1}`,
     status: task.status as Status,
     priority: task.priority as Priority
   }));
 
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<TaskType[]>(initialTasks);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -94,13 +52,14 @@ const Page: React.FC = () => {
 
     setTasks(updatedTasks);
   };
+  console.log( initialTasks, 'tasks');
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="bg-slate-100 min-h-screen w-full flex items-start gap-10 p-10 justify-center">
-        <Column title="To Do" tasks={tasks.filter(task => task.status === 'to do')} />
-        <Column title="In Progress" tasks={tasks.filter(task => task.status === 'in progress')} />
-        <Column title="Completed" tasks={tasks.filter(task => task.status === 'completed')} />
+        <Column title="To do" tasks={initialTasks.filter(task => task.status === 'To do')} />
+        <Column title="In progress" tasks={initialTasks.filter(task => task.status === 'In progress')} />
+        <Column title="Completed" tasks={initialTasks.filter(task => task.status ==='Completed')} />
       </div>
     </DragDropContext>
   );

@@ -55,12 +55,12 @@ const Page = () => {
             password: blogInputs.password,
           });
 
-          const jwt = res.data.token;
-          const user = JSON.stringify(res.data.user);
-          if (typeof window !== 'undefined') {
-            localStorage.setItem("token", jwt);
-            localStorage.setItem("user", user);
-          };
+          // const jwt = res.data.token;
+          // const user = JSON.stringify(res.data.user);
+          // if (typeof window !== 'undefined') {
+          //   localStorage.setItem("token", jwt);
+          //   localStorage.setItem("user", user);
+          // };
           toast.success("Successfully signed up..!");
           router.push("/home");
         } catch (error: any) {

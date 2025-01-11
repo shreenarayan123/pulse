@@ -1,25 +1,20 @@
-"use client"
-import Content from '@/components/Content'
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+'use client';
+import { useGlobalContext } from "@/app/context/globalProvider";
+import Content from "@/components/Content";
+import { CreateTaskForm } from "@/components/CreateTaskForm";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 function page() {
+  const { TaskFormModal } = useGlobalContext();
 
-  const router = useRouter();
-  useEffect(() => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      router.push('/');
-    }
-   
-  }, []);
   return (
-    <div className='w-full h-full'>
-      
-        
-       <Content/>
+    <div className="w-full h-full">
+      {TaskFormModal && <CreateTaskForm />}
+
+      <Content />
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

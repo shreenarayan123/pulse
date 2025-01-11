@@ -1,0 +1,16 @@
+'use client'
+import { TaskForm } from "./form/Form";
+
+export const CreateTaskForm = () => {
+  return (
+    <div className="fixed inset-0 z-50 w-full">
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-white bg-opacity-25 backdrop-blur-sm w-full" />
+      <div className="w-full h-full fixed inset-0 flex justify-center items-center bg-transparent ">
+        <div className=" flex flex-col items-center bg-white rounded-lg shadow-xl p-6 w-full max-w-md relative z-50">
+          <TaskForm />
+        </div>
+      </div>
+    </div>
+  );
+};

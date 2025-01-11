@@ -26,12 +26,12 @@ const Page = () => {
         password: blogInputs.password
       });
       
-      const jwt = res.data.token;
-      const user = JSON.stringify(res.data.user);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem("token", jwt);
-        localStorage.setItem("user", user);
-      }
+      // const jwt = res.data.token;
+      // const user = JSON.stringify(res.data.user);
+      // if (typeof window !== 'undefined') {
+      //   localStorage.setItem("token", jwt);
+      //   localStorage.setItem("user", user);
+      // }
       toast.success('Successfully signed in!');
       router.push('/home');    
     } catch (error: any) {
@@ -39,7 +39,7 @@ const Page = () => {
             
         toast.error("Invalid email or password");
       }else{
-        toast.error("Something went wrong ! Please try again")
+        console.log(error.message, error, error.response)
       }
     }
   }

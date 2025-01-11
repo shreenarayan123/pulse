@@ -1,48 +1,39 @@
+import { Priority, Status, TaskType } from '@/actions/task/types';
 import { Draggable } from '@hello-pangea/dnd';
 import { SquarePen, Trash2 } from 'lucide-react'
 import React from 'react'
 
 
 
-type Priority = 'low' | 'mid' | 'high';
-type Status = 'to do' | 'in progress' | 'completed';
-
-interface Tasktype {
-  id:string,
-  title: string;
-  content: string;
-  status: Status;
-  deadline: string;
-  priority: Priority;
-}
 
 const getPriorityColor = (priority: Priority): string => {
   switch (priority) {
-    case 'high': return 'bg-red-100 text-red-600 border-red-600';
-    case 'mid': return 'bg-yellow-100 text-yellow-600 border-yellow-600';
-    case 'low': return 'bg-cyan-100 text-cyan-600 border-cyan-600';
+    case 'High': return 'bg-red-100 text-red-600 border-red-600';
+    case 'Mid': return 'bg-yellow-100 text-yellow-600 border-yellow-600';
+    case 'Low': return 'bg-cyan-100 text-cyan-600 border-cyan-600';
     default: return 'bg-gray-100 text-gray-600 border-gray-600';
   }
 };
 
 const getStatusColor = (status: Status): string => {
   switch (status) {
-    case 'to do': return 'bg-blue-500 text-white';
-    case 'in progress': return 'bg-yellow-500 text-white';
-    case 'completed': return 'bg-green-500 text-white';
+    case 'To do': return 'bg-blue-500 text-white';
+    case 'In progress': return 'bg-yellow-500 text-white';
+    case 'Completed': return 'bg-green-500 text-white';
     default: return 'bg-gray-500 text-white';
   }
 };
 
 
 
-  const BoardTask: React.FC<{ task: Tasktype; index: number }> = ({ task, index }) => {
+  const BoardTask: React.FC<{ task: TaskType; index: number }> = ({ task, index }) => {
+
     const priorityColorClass = getPriorityColor(task.priority);
     const statusColorClass = getStatusColor(task.status);
     return (
-      <Draggable draggableId={task.id} index={index}>
+      <Draggable draggableId={task._id} index={index} >
         {(provided) => (
-          <div
+          <div 
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
