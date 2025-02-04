@@ -14,9 +14,19 @@ export type Status = 'To do' | 'In progress' | 'Completed';
   priority: Priority;
 }
  await dbConnect();
-export const createTask = async (task:TaskTypes)=>{
-  const res = await Task.create(task);
-  return {};
+ export const createTask = async (task: TaskTypes): Promise<{ success: boolean, task:TaskType }> => {
+ const result = await Task.create(task);
+ const plainObject = result.toObject(); 
+  return { success: true ,
+     task:{
+      _id: plainObject._id.toString(), // Convert ObjectId to string
+      title: plainObject.title,
+      content: plainObject.content,
+      status: plainObject.status,
+      deadline: plainObject.deadline.toISOString(), // Convert Date to ISO string
+      priority: plainObject.priority,
+     }
+    };
 }
 export const getTask = async (): Promise<TaskType[]> => {
   try {
@@ -26,10 +36,10 @@ export const getTask = async (): Promise<TaskType[]> => {
       title: task.title,
       content: task.content,
       status: task.status,
-      deadline: task.deadline.toLocaleDateString(),
+      deadline: task.deadline.toISOString(),
       priority: task.priority,
     })) as TaskType[];
-    return tasktypes;
+    return JSON.parse(JSON.stringify(tasktypes));
   } catch (error) {
     console.error('Error fetching tasks:', error);
     return Promise.reject(error);
@@ -39,15 +49,26 @@ export const getTask = async (): Promise<TaskType[]> => {
 
 
 
-export const updateTask = async (task:TaskType)=>{
+export const updateTask = async (task:TaskType): Promise<{ success: boolean, task:TaskType}>=>{
     const id = task._id;
-    const res =  Task.findByIdAndUpdate(id, task);
-    return res;
+ const result =await Task.findByIdAndUpdate(id, task, {new:true});
+ const plainObject = result.toObject(); 
+ return { success: true ,
+    task:{
+     _id: plainObject._id.toString(), // Convert ObjectId to string
+     title: plainObject.title,
+     content: plainObject.content,
+     status: plainObject.status,
+     deadline: plainObject.deadline.toISOString(), // Convert Date to ISO string
+     priority: plainObject.priority,
+    }
+   };
 }
 
-export const deleteTask = async (task:TaskType)=>{
-    const id = task._id;
-    const res =  Task.findByIdAndDelete(id);
-    return res;
-}
+export const deleteTask = async (task: TaskType) => {
+  const id = task._id;
+  await Task.findByIdAndDelete(id);
+  return { success: true };
+};
+
 

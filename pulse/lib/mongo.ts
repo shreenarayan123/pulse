@@ -27,7 +27,7 @@ async function dbConnect() {
       bufferCommands: false, // Disable buffering
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts)
+    cached.promise =await mongoose.connect(MONGODB_URI, opts)
   }
   
   try {
@@ -40,11 +40,3 @@ async function dbConnect() {
 }
 
 export default dbConnect
-// export async function dbConnect() {
-//   try {
-//     const connect = await mongoose.connect(String(process.env.MONGO_DB_CONNECTION_STRING));
-//     return connect
-//   } catch (e ) {
-//     console.log(e, "connection error");
-//   }
-// }

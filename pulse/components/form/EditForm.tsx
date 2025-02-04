@@ -20,32 +20,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useGlobalContext } from "@/app/context/globalProvider";
-import { createTask } from "@/actions/task";
+import { updateTask } from "@/actions/task";
 import { useForm } from "react-hook-form";
+import { TaskType } from "@/actions/task/types";
 import { useRouter } from "next/navigation";
 
-export function TaskForm() {
-  const { setTaskFormModal, setTasks } = useGlobalContext();
+export function EditTask() {
+  const router = useRouter();
+  const { setEditTaskModal, editPost, setTasks } = useGlobalContext();
   const form = useForm<z.infer<typeof TaskSchema>>({
     resolver: zodResolver(TaskSchema),
     defaultValues: {
-      title: "",
-      content: "",
-      priority: "Low",
-      status: "To do",
-      deadline: "",
+      title: editPost.title,
+      content: editPost.content,
+      priority: editPost.priority,
+      status: editPost.status,
+      deadline: editPost.deadline,
     },
   });
 
   async function onSubmit(values: z.infer<typeof TaskSchema>) {
-    try {
-      const result = await createTask(values);
-      if (result.success) {
-        setTasks((prev) => [...prev, { ...values, _id: result.task._id }]); // add the new task to UI
-        setTaskFormModal(false);
-      }
-    } catch (error) {
-      console.error("Error creating task:", error);
+    const updatedtask: TaskType = { ...values, _id: editPost._id };
+    const res = await updateTask(updatedtask);
+    setEditTaskModal(false);
+    if (res.success) {
+      router.refresh();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task._id === editPost._id ? res.task : task))
+      );
     }
   }
 
@@ -141,7 +143,7 @@ export function TaskForm() {
         <div className="w-full flex items-center justify-start gap-6">
           <Button
             className="bg-red-500"
-            onClick={() => setTaskFormModal(false)}
+            onClick={() => setEditTaskModal(false)}
           >
             Cancel
           </Button>

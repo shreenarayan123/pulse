@@ -15,21 +15,31 @@ import React, { useEffect, useState } from "react";
 import { TaskType } from "@/actions/task/types";
 import { getTask } from "@/actions/task";
 import { useGlobalContext } from "@/app/context/globalProvider";
+import { set } from "mongoose";
+import { debounce } from "@/lib/Debounce";
 
 const Content = () => {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const { setTaskFormModal } = useGlobalContext();
+  const {
+    setTaskFormModal,
+    tasks,
+    setTasks,
+    setTaskStatus,
+    setTaskPriority,
+    taskStatus,
+    taskPriority,
+    setSearchTerm,
+  } = useGlobalContext();
+  const [allTasks, setAllTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const result = await getTask();
-        const data = await  result.map((task: any) => ({
+        const data = result.map((task: any) => ({
           ...task,
-          status: task.status.toLowerCase(),
-          priority: task.priority.toLowerCase(),
+          status: task.status,
+          priority: task.priority,
         })) as TaskType[];
-        console.log(data, "Data");
         setTasks(data);
       } catch (error) {
         console.error("Error:", error);
@@ -39,7 +49,43 @@ const Content = () => {
     fetchTasks();
   }, []);
 
-  const [position, setPosition] = useState("bottom");
+  useEffect(() => {
+    if (tasks.length && allTasks.length === 0) {
+      setAllTasks(tasks);
+    }
+  }, [tasks]);
+
+  useEffect(() => {
+    let filteredTasks = allTasks;
+
+    if (taskStatus) {
+      filteredTasks = filteredTasks.filter(
+        (task) => task.status === taskStatus
+      );
+    }
+    if (taskPriority) {
+      const priorityOrder = { High: 3, Medium: 2, Low: 1 };
+
+      filteredTasks = [...filteredTasks].sort((a, b) => {
+        if (taskPriority === "Highest First") {
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        } else {
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        }
+      });
+    }
+
+    setTasks(filteredTasks);
+  }, [taskStatus, taskPriority, allTasks]);
+
+  const handleSearch = debounce((value: string) => {
+    setSearchTerm(value);
+    const filteredTasks = allTasks.filter((task) =>
+      task.title.toLowerCase().includes(value.toLowerCase())
+    );
+    setTasks(filteredTasks);
+  }, 300);
+
   const [dropMenu, setDropMenu] = useState(false);
   const [dropSort, setDropSort] = useState(false);
 
@@ -54,6 +100,9 @@ const Content = () => {
             <SearchIcon className="h-5 text-gray-500" />
           </div>
           <input
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleSearch(e.target.value)
+            }
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900  rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -62,31 +111,60 @@ const Content = () => {
           />
         </div>
       </div>
-      <div className="w-full flex items-center justify-between pt-4">
+      <div className="w-full flex items-center justify-between pt-4 pr-5">
         <span className="text-2xl font-bold font-sans flex w-full pl-10">
           All Tasks
         </span>
         <div className="w-full flex    mb-5 gap-10">
+          <Button
+            onClick={() => setTaskStatus("")}
+            variant="secondary"
+            className="flex gap-2"
+          >
+            Clear Filter
+          </Button>
+          <Button
+            onClick={() => setTaskPriority("")}
+            variant="secondary"
+            className="flex gap-2"
+          >
+            Clear Sorting
+          </Button>
           <div className=" ">
             <DropdownMenu open={dropMenu} onOpenChange={setDropMenu}>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex gap-2">
-                  Filter by status {dropMenu ? <ChevronUp /> : <ChevronDown />}
+                  Filter by{" "}
+                  {taskStatus ? (
+                    <span className="font-semibold">{taskStatus}</span>
+                  ) : (
+                    "Status"
+                  )}{" "}
+                  {dropMenu ? <ChevronUp /> : <ChevronDown />}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup
-                  value={position}
-                  onValueChange={setPosition}
+                  value={taskStatus}
+                  onValueChange={setTaskStatus}
                 >
-                  <DropdownMenuRadioItem value="top">
+                  <DropdownMenuRadioItem
+                    value="To do"
+                    className="cursor-pointer"
+                  >
                     To Do
                   </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="bottom">
+                  <DropdownMenuRadioItem
+                    value="In progress"
+                    className="cursor-pointer"
+                  >
                     In Progress
                   </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="right">
+                  <DropdownMenuRadioItem
+                    value="Completed"
+                    className="cursor-pointer"
+                  >
                     Completed
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
@@ -97,21 +175,33 @@ const Content = () => {
             <DropdownMenu open={dropSort} onOpenChange={setDropSort}>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex gap-2">
-                  Sort by priority {dropSort ? <ChevronUp /> : <ChevronDown />}
+                  Sort by{" "}
+                  {taskPriority ? (
+                    <span className="font-semibold">{taskPriority}</span>
+                  ) : (
+                    "Status"
+                  )}{" "}
+                  {dropSort ? <ChevronUp /> : <ChevronDown />}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup
-                  value={position}
-                  onValueChange={setPosition}
+                  value={taskPriority}
+                  onValueChange={setTaskPriority}
                 >
-                  <DropdownMenuRadioItem value="top">Low</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="bottom">
-                    Medium
+                  <DropdownMenuRadioItem
+                    value="Lowest First"
+                    className="cursor-pointer"
+                  >
+                    Lowest First
                   </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="right">
-                    High
+
+                  <DropdownMenuRadioItem
+                    value="Highest First"
+                    className="cursor-pointer"
+                  >
+                    Highest First
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
@@ -127,11 +217,9 @@ const Content = () => {
       </div>
 
       <div className="w-full grid grid-cols-2 overflow-y-scroll lg:grid-cols-4 h-[87%] bg-slate-100  p-5 gap-3 border-t-2 border-gray-100">
-        <div>
-          {tasks.map((task) => (
-            <Task key={task._id} task={task} />
-          ))}
-        </div>
+        {tasks.map((task) => (
+          <Task key={task._id} task={task} />
+        ))}
       </div>
     </div>
   );

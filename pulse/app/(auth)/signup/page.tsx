@@ -137,9 +137,9 @@ const Page = () => {
               CheckPasswordStrength(e);
             }}
           />
-          <div className={isPass ? "text-black  block" : "text-black  hidden"}>
-            <span className="text-3xl relative bottom-0.5 font-bold">. </span>
-            Password Strength : {passwordStrength}
+          <div className={isPass ? "text-black block pl-2 " : "text-black hidden"}>
+            
+          Password Strength : <span className={passwordStrength === "Strong" ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}>{passwordStrength}</span>
           </div>
 
           <button

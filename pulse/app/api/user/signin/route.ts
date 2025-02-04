@@ -5,7 +5,7 @@ import { User } from "../../../../model/user-model";
 import  dbConnect  from "@/lib/mongo";
 
 
-dbConnect();
+await dbConnect();
 
 export async function POST(request: NextRequest) {
   try {

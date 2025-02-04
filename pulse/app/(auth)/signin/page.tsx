@@ -25,17 +25,13 @@ const Page = () => {
         email: blogInputs.username,
         password: blogInputs.password
       });
-      
-      // const jwt = res.data.token;
-      // const user = JSON.stringify(res.data.user);
-      // if (typeof window !== 'undefined') {
-      //   localStorage.setItem("token", jwt);
-      //   localStorage.setItem("user", user);
-      // }
-      toast.success('Successfully signed in!');
-      router.push('/home');    
+      if (res.status === 200) {
+        toast.success('Successfully signed in!');
+        router.push('/home');  // ✅ Directly call router.push here
+      }
+       
     } catch (error: any) {
-      if ( error.response.status === 400 ){
+      if ( error?.response?.status === 400 ){
             
         toast.error("Invalid email or password");
       }else{
@@ -65,8 +61,8 @@ const Page = () => {
               onFocus={() => setIsUser(true)} 
               onBlur={() => setIsUser(false)}  
             />
-            <div className={isUser ? "text-black block" : "text-black hidden"}>
-              <span className='text-3xl relative bottom-0.5 font-bold'>• </span> 
+            <div className={isUser ? "text-black block pl-2 " : "text-black hidden"}>
+              
               <span>Enter A valid email</span>
             </div>
             
@@ -78,8 +74,8 @@ const Page = () => {
               type='password' 
               onChange={(e) => setBlogInputs({ ...blogInputs, password: e.target.value })}  
             />
-            <div className={isPass ? "text-black block" : "text-black hidden"}>
-              <span className='text-3xl relative bottom-0.5 font-bold'>•</span> At least 6 characters
+            <div className={isPass ? "text-black block  pl-2" : "text-black hidden"}>
+               At least 6 characters
             </div>
             
             <button type="submit" className="text-gray-900 w-full my-5 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">

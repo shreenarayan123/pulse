@@ -56,7 +56,7 @@ const Sidebar = () => {
           className="flex w-full items-center justify-center py-2 gap-5 font-semibold text-lg hover:text-purple-500 hover:bg-purple-200 rounded-lg  cursor-pointer "
         >
           <LogOutIcon />
-          Logout
+          <span className="hidden lg:flex">Logout</span>
         </span>
       </div>
     </div>
