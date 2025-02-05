@@ -5,11 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 //delete task
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  request:NextRequest, 
+  context:{params:{id:string}}
+): Promise<NextResponse>{
   try {
-    const id = params.id;
+      const {id }= context.params;
     
     if (!id) {
       return NextResponse.json(
@@ -44,10 +44,10 @@ export async function DELETE(
 //update task
 export async function PUT(
     request:NextRequest, 
-    {params}:{params:{id:string}}
-){
+    context:{params:{id:string}}
+): Promise<NextResponse>{
     try {
-        const id = params.id;
+        const {id }= context.params;
         const reqBody = await request.json();
         const { title, content, deadline, priority,status  } = reqBody;
         const {success} = TaskValidation.safeParse(reqBody);
