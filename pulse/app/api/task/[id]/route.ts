@@ -1,15 +1,21 @@
 import { TaskValidation } from "@/lib/ZodValidation";
 import { Task } from "@/model/task-mode";
 import { NextRequest, NextResponse } from "next/server";
+import { use } from "react";
 
 
+type Props = {
+  params: {
+    id: string
+  }
+}
 //delete task
 export async function DELETE(
-  request:NextRequest, 
-  context:{params:{id:string}}
-): Promise<NextResponse>{
+  request: NextRequest,
+  {params}: {params: Promise<{ id: string }> }
+){
   try {
-      const {id }= context.params;
+    const { id } = await use(params);
     
     if (!id) {
       return NextResponse.json(
@@ -43,39 +49,36 @@ export async function DELETE(
 
 //update task
 export async function PUT(
-    request:NextRequest, 
-    context:{params:{id:string}}
-): Promise<NextResponse>{
-    try {
-        const {id }= context.params;
-        const reqBody = await request.json();
-        const { title, content, deadline, priority,status  } = reqBody;
-        const {success} = TaskValidation.safeParse(reqBody);
-                if(!success){
-                    return  NextResponse.json({error:"Fields can not be empty"}, {status:500});
-                }else{
-                    
-                try {
-                    const updatedTask = await Task.findByIdAndUpdate(id,
-                        {
-                            title: title, 
-                            content: content, 
-                            deadline: deadline,
-                            priority: priority,
-                            status: status
-                        },
-                        { new: true })
-                    await updatedTask.save();
-                    return NextResponse.json({
-                        message:"task updated",
-                        updatedTask
-                    })
-                } catch (error) {
-                    return NextResponse.json({error:"Task not found"}, {status:404});
-                }
-                }
-    } catch (error:any) {
-        return NextResponse.json({error:error.message}, {status:500})        
-    }
+  request: NextRequest,
+  {params}: {params: Promise<{ id: string }> }
+){
+  try {
+    const { id } = await use(params);
+      const reqBody = await request.json();
+      const { title, content, deadline, priority, status } = reqBody;
+      
+      const { success } = TaskValidation.safeParse(reqBody);
+      if (!success) {
+          return NextResponse.json({ error: "Fields can not be empty" }, { status: 500 });
+      }
 
+      const updatedTask = await Task.findByIdAndUpdate(
+          id,
+          { title, content, deadline, priority, status },
+          { new: true }
+      );
+      
+      if (!updatedTask) {
+          return NextResponse.json({ error: "Task not found" }, { status: 404 });
+      }
+
+      await updatedTask.save();
+      return NextResponse.json({
+          message: "task updated",
+          updatedTask
+      });
+
+  } catch (error: any) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
