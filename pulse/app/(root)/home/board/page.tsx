@@ -56,7 +56,7 @@ const Page: React.FC = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="bg-slate-100 min-h-screen w-full flex items-start gap-10 p-10 justify-center">
+      <div className="bg-slate-100 min-h-screen w-full flex items-start md:gap-10 md:p-10 p-2 justify-center">
         <Column title="To do" tasks={initialTasks.filter(task => task.status === 'To do')} />
         <Column title="In progress" tasks={initialTasks.filter(task => task.status === 'In progress')} />
         <Column title="Completed" tasks={initialTasks.filter(task => task.status ==='Completed')} />

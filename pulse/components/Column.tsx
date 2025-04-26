@@ -38,7 +38,7 @@ const Column: React.FC<ColumnProps> = ({ title, tasks }) => {
             <img
               src={getImageForTitle(title).src}
               alt={title}
-              className="w-12 h-12"
+              className="w-12 h-12 hidden md:block"
             />
             <span className="font-sans text-xl font-bold mb-4">{title}</span>
           </div>

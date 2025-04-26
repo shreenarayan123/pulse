@@ -37,16 +37,16 @@ const Task: React.FC<TaskCardProps> = ({ task }) => {
     <div className="flex flex-col w-auto items-center py-6 px-5 bg-white rounded-xl justify-between h-[225px]">
       <div className="w-full justify-between flex items-center">
         <span
-          className={`px-3 py-1 font-semibold border-2 rounded-xl text-sm ${priorityColorClass}`}
+          className={`md:px-3 md:py-1 px-1 font-semibold border-2 rounded-xl text-xs md:text-sm ${priorityColorClass}`}
         >
           {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
         </span>
-        <span className="px-3 py-1 font-semibold gap-2 text-md flex items-center">
+        <span className="md:px-3 md:py-1 font-semibold gap-2 text-xs md:text-lg flex items-center">
           Due <span className={` ${dateColorClass}`}>{date}</span>
         </span>
       </div>
       <div className="flex flex-col items-start gap-2">
-        <span className="text-xl font-semibold">{task.title}</span>
+        <span className="md:text-xl font-semibold">{task.title}</span>
         {task.content.length > 72 ? (
           <p className="text-gray-400 line-clamp-2">{task.content} </p>
         ) : (
@@ -56,7 +56,7 @@ const Task: React.FC<TaskCardProps> = ({ task }) => {
       <div className="w-full flex items-center">
         <div className="w-full">
           <span
-            className={`px-3 py-1 font-semibold rounded-xl text-sm ${statusColorClass}`}
+            className={`px-3 py-1 font-semibold rounded-xl text-xs hidden md:block md:text-sm ${statusColorClass}`}
           >
             {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
           </span>

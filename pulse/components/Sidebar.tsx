@@ -29,9 +29,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-white h-full w-full  flex flex-col items-center justify-between gap-14 py-10">
+    <div className="bg-white h-full w-full  flex flex-col items-center justify-between gap-14 py-10 ">
       <div className="flex flex-col items-center gap-14 w-full">
-        <div className="text-2xl font-bold text-purple-700">Pulse</div>
+        <div className="md:text-2xl text-lg font-bold text-purple-700">Pulse</div>
         <div className="flex flex-col items-center gap-10 px-4 w-full">
           {menuOptions.map((item) => {
             return (

@@ -112,107 +112,111 @@ const Content = () => {
         </div>
       </div>
       <div className="w-full flex items-center justify-between pt-4 pr-5">
-        <span className="text-2xl font-bold font-sans flex w-full pl-10">
+        <span className="text-2xl font-bold font-sans hidden md:flex w-full pl-10">
           All Tasks
         </span>
-        <div className="w-full flex    mb-5 gap-10">
-          <Button
-            onClick={() => setTaskStatus("")}
-            variant="secondary"
-            className="flex gap-2"
-          >
-            Clear Filter
-          </Button>
-          <Button
-            onClick={() => setTaskPriority("")}
-            variant="secondary"
-            className="flex gap-2"
-          >
-            Clear Sorting
-          </Button>
-          <div className=" ">
-            <DropdownMenu open={dropMenu} onOpenChange={setDropMenu}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex gap-2">
-                  Filter by{" "}
-                  {taskStatus ? (
-                    <span className="font-semibold">{taskStatus}</span>
-                  ) : (
-                    "Status"
-                  )}{" "}
-                  {dropMenu ? <ChevronUp /> : <ChevronDown />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={taskStatus}
-                  onValueChange={setTaskStatus}
-                >
-                  <DropdownMenuRadioItem
-                    value="To do"
-                    className="cursor-pointer"
-                  >
-                    To Do
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem
-                    value="In progress"
-                    className="cursor-pointer"
-                  >
-                    In Progress
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem
-                    value="Completed"
-                    className="cursor-pointer"
-                  >
-                    Completed
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <div className="w-full flex flex-col md:flex-row  items-center  gap-2 mb-5 md:gap-10 px-1">
+          <div className=" flex md:gap-5 gap-5 items-center">
+            <Button
+              onClick={() => setTaskStatus("")}
+              variant="secondary"
+              className="flex gap-2"
+            >
+              Clear Filter
+            </Button>
+            <Button
+              onClick={() => setTaskPriority("")}
+              variant="secondary"
+              className="flex gap-2"
+            >
+              Clear Sorting
+            </Button>
           </div>
-          <div className=" ">
-            <DropdownMenu open={dropSort} onOpenChange={setDropSort}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex gap-2">
-                  Sort by{" "}
-                  {taskPriority ? (
-                    <span className="font-semibold">{taskPriority}</span>
-                  ) : (
-                    "Status"
-                  )}{" "}
-                  {dropSort ? <ChevronUp /> : <ChevronDown />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={taskPriority}
-                  onValueChange={setTaskPriority}
-                >
-                  <DropdownMenuRadioItem
-                    value="Lowest First"
-                    className="cursor-pointer"
+          <div className=" flex gap-2 items-center">
+            <div className=" ">
+              <DropdownMenu open={dropMenu} onOpenChange={setDropMenu}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex gap-2">
+                    Filter by{" "}
+                    {taskStatus ? (
+                      <span className="font-semibold">{taskStatus}</span>
+                    ) : (
+                      "Status"
+                    )}{" "}
+                    {dropMenu ? <ChevronUp /> : <ChevronDown />}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioGroup
+                    value={taskStatus}
+                    onValueChange={setTaskStatus}
                   >
-                    Lowest First
-                  </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
+                      value="To do"
+                      className="cursor-pointer"
+                    >
+                      To Do
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
+                      value="In progress"
+                      className="cursor-pointer"
+                    >
+                      In Progress
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
+                      value="Completed"
+                      className="cursor-pointer"
+                    >
+                      Completed
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className=" ">
+              <DropdownMenu open={dropSort} onOpenChange={setDropSort}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex gap-2">
+                    Sort by{" "}
+                    {taskPriority ? (
+                      <span className="font-semibold">{taskPriority}</span>
+                    ) : (
+                      "Status"
+                    )}{" "}
+                    {dropSort ? <ChevronUp /> : <ChevronDown />}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioGroup
+                    value={taskPriority}
+                    onValueChange={setTaskPriority}
+                  >
+                    <DropdownMenuRadioItem
+                      value="Lowest First"
+                      className="cursor-pointer"
+                    >
+                      Lowest First
+                    </DropdownMenuRadioItem>
 
-                  <DropdownMenuRadioItem
-                    value="Highest First"
-                    className="cursor-pointer"
-                  >
-                    Highest First
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    <DropdownMenuRadioItem
+                      value="Highest First"
+                      className="cursor-pointer"
+                    >
+                      Highest First
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
-          <Button
-            onClick={() => setTaskFormModal(true)}
-            className="bg-blue-500 flex items-center gap-2"
-          >
-            <Plus /> Add new Task
-          </Button>
+        <Button
+          onClick={() => setTaskFormModal(true)}
+          className="bg-blue-500 flex items-center gap-2"
+        >
+          <Plus /> Add new Task
+        </Button>
         </div>
       </div>
 

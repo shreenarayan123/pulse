@@ -46,19 +46,19 @@ const BoardTask: React.FC<{ task: TaskType; index: number }> = ({
         >
           <div className="w-full">
             <span
-              className={`px-3 py-1 font-semibold border-2 rounded-xl text-sm ${priorityColorClass}`}
+              className={`px-3 py-1 font-semibold border-2 rounded-xl  text-xs md:text-sm ${priorityColorClass}`}
             >
               {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
             </span>
           </div>
           <div className="flex flex-col items-start gap-3">
-            <span className="text-xl font-semibold">{task.title}</span>
-            <p className="text-gray-400">{task.content}</p>
+            <span className=" text-xs md:text-xl font-semibold">{task.title}</span>
+            <p className="text-gray-400 hidden md:block">{task.content}</p>
           </div>
           <div className="w-full flex items-center">
             <div className="w-full">
               <span
-                className={`px-3 py-1 font-semibold rounded-xl text-sm ${statusColorClass}`}
+                className={`md:px-3 md:py-1 px-1 hidden md:block font-semibold rounded-xl  text-xs md:text-sm ${statusColorClass}`}
               >
                 {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
               </span>
