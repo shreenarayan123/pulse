@@ -35,7 +35,7 @@ const Page = () => {
             
         toast.error("Invalid email or password");
       }else{
-        console.log(error.message, error, error.response)
+        console.log(error)
       }
     }
   }

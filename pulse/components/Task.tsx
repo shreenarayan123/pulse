@@ -34,7 +34,7 @@ const Task: React.FC<TaskCardProps> = ({ task }) => {
   }, [task.deadline]);
 
   return (
-    <div className="flex flex-col w-auto items-center py-6 px-5 bg-white rounded-xl justify-between h-[225px]">
+    <div className="flex flex-col w-auto items-center py-4 px-5 bg-white rounded-xl justify-between h-[225px]">
       <div className="w-full justify-between flex items-center">
         <span
           className={`md:px-3 md:py-1 px-1 font-semibold border-2 rounded-xl text-xs md:text-sm ${priorityColorClass}`}
@@ -53,14 +53,12 @@ const Task: React.FC<TaskCardProps> = ({ task }) => {
           <p className="text-gray-400 ">{task.content}</p>
         )}
       </div>
-      <div className="w-full flex items-center">
-        <div className="w-full">
+      <div className="w-full flex items-center justify-between">
           <span
-            className={`px-3 py-1 font-semibold rounded-xl text-xs hidden md:block md:text-sm ${statusColorClass}`}
+            className={`px-3 py-1  font-semibold rounded-xl text-xs hidden md:block md:text-sm ${statusColorClass}`}
           >
             {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
           </span>
-        </div>
         <div className="flex items-center gap-2">
           <SquarePen
             className="cursor-pointer"

@@ -54,13 +54,6 @@ const Page = () => {
             email: blogInputs.username,
             password: blogInputs.password,
           });
-
-          // const jwt = res.data.token;
-          // const user = JSON.stringify(res.data.user);
-          // if (typeof window !== 'undefined') {
-          //   localStorage.setItem("token", jwt);
-          //   localStorage.setItem("user", user);
-          // };
           toast.success("Successfully signed up..!");
           router.push("/home");
         } catch (error: any) {
@@ -68,6 +61,7 @@ const Page = () => {
             
             toast.error("User already exists");
           }else{
+            console.log(error);
             toast.error("Something went wrong ! Please try again")
           }
         }

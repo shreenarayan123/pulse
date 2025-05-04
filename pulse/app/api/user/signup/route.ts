@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
     const savedUser = await newUser.save();
     const jwtSecret = process.env.JWT_SECRET || "secret";
     const token = jwt.sign({ id: savedUser._id }, jwtSecret);
-
     const response = NextResponse.json({
       message: "User created successfully",
       success: true,
