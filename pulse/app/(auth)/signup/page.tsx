@@ -45,7 +45,7 @@ const Page = () => {
         toast.error("Invalid email");
       }
       if (validPassword.length > 0) {
-        toast.error("Invalid password");
+        toast.error("Password has been found in a data breach, enter a strong password");
       }
       if (validEmail && validPassword.length === 0) {
         try {

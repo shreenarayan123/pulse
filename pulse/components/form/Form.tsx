@@ -41,7 +41,7 @@ export function TaskForm() {
     try {
       const result = await createTask(values);
       if (result.success) {
-        setTasks((prev) => [...prev, { ...values, _id: result.task._id }]); // add the new task to UI
+        setTasks((prev) => [...prev, { ...values, _id: result.task._id }]); 
         setTaskFormModal(false);
       }
     } catch (error) {
